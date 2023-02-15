@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 echo "00-laravel-deploy.sh"
-php -v
+php artisan about
 
 # echo "Running composer"
 
@@ -17,8 +17,8 @@ php -v
 # echo "Caching routes..."
 # php artisan route:cache
 
-# echo "Running migrations..."
-# php artisan migrate --force
+echo "Running migrations..."
+php artisan migrate --force
 
 # chown -R sail:sail /var/www/html
 
