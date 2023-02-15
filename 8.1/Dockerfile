@@ -60,10 +60,10 @@ RUN npm ci
 RUN npm run build
 
 RUN php artisan config:cache
-
+RUN php artisan about
 RUN php artisan route:cache
 
-RUN php artisan migrate --force
+# RUN php artisan migrate --force
 
 RUN chown -Rf sail:sail /var/www/html
 
