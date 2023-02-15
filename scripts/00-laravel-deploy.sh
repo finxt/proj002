@@ -2,9 +2,9 @@
 
 echo "00-laravel-deploy.sh"
 
-# echo "Running composer"
+echo "Running composer"
 
-# composer install --no-dev --working-dir=/var/www/html
+composer install --no-dev --working-dir=/var/www/html
 
 echo "JS&CSS build..."
 npm ci
@@ -21,6 +21,6 @@ php artisan migrate --force
 
 php artisan about
 
-# chown -R sail:sail /var/www/html
+chown -R sail:sail /var/www/html
 
 
