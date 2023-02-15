@@ -68,6 +68,6 @@ RUN chown -Rf sail:sail /var/www/html
 
 RUN chmod +x /usr/local/bin/start-container
 
-EXPOSE 8000
+EXPOSE 80
 
 ENTRYPOINT ["start-container"]
