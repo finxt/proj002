@@ -1,3 +1,5 @@
+# syntax = docker/dockerfile:1.2
+
 FROM ubuntu:22.04
 
 LABEL maintainer="Taylor Otwell"
@@ -14,8 +16,7 @@ ENV TZ=UTC
 ENV COMPOSER_ALLOW_SUPERUSER 1
 ENV COMPOSER_NO_INTERACTION 1
 
-ENV APP_ENV production
-ENV APP_DEBUG false
+RUN --mount=type=secret,id=_env,dst=/etc/secrets/.env cat /etc/secrets/.env
 
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
@@ -56,18 +57,24 @@ RUN useradd -ms /bin/bash --no-user-group -g $WWWGROUP -u 1337 sail
 
 COPY . /var/www/html/
 
-RUN chown -R sail:sail /var/www/html
-
-RUN composer install
-
-RUN chown -R sail:sail /var/www/html/vendor
-
 COPY ./8.1/start-container /usr/local/bin/start-container
 COPY ./8.1/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY ./8.1/php.ini /etc/php/8.1/cli/conf.d/99-sail.ini
+
+
+RUN composer install --no-dev --working-dir=/var/www/html
+RUN npm ci
+RUN npm run build
+RUN php artisan config:cache
+RUN php artisan route:cache
+RUN php artisan migrate --force
+
+RUN chown -Rf sail:sail /var/www/html
+
+RUN php artisan about
+
 RUN chmod +x /usr/local/bin/start-container
 
 EXPOSE 80
 
-#ENTRYPOINT ["/usr/bin/php","-d","variables_order=EGPCS","/var/www/html/artisan","serve","--host=0.0.0.0","--port=80"]
 ENTRYPOINT ["start-container"]
