@@ -62,7 +62,8 @@ COPY ./8.1/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY ./8.1/php.ini /etc/php/8.1/cli/conf.d/99-sail.ini
 
 
-RUN composer install --no-dev --working-dir=/var/www/html
+# RUN composer install --no-dev --working-dir=/var/www/html
+RUN composer install --working-dir=/var/www/html
 RUN npm ci
 RUN npm run build
 RUN php artisan config:cache
