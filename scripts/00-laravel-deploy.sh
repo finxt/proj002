@@ -6,6 +6,9 @@ echo "00-laravel-deploy.sh"
 # 
 # composer install --no-dev --working-dir=/var/www/html
 # 
+# echo "arutusab breeze:install..."
+# php artisan breeze:install
+# 
 # echo "JS&CSS build..."
 # npm ci
 # npm run build
