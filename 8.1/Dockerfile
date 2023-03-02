@@ -17,7 +17,7 @@ ENV COMPOSER_ALLOW_SUPERUSER 1
 ENV COMPOSER_NO_INTERACTION 1
 
 ENV APP_ENV production
-ENV APP_DEBUG true
+ENV APP_DEBUG false
 
 RUN --mount=type=secret,id=_env,dst=/etc/secrets/.env cat /etc/secrets/.env
 
@@ -68,15 +68,18 @@ COPY ./8.1/php.ini /etc/php/8.1/cli/conf.d/99-sail.ini
 RUN composer install --no-dev --working-dir=/var/www/html
 # RUN composer install --working-dir=/var/www/html
 
-# RUN npm ci
-# RUN npm run build
-# RUN php artisan config:cache
-# RUN php artisan route:cache
-# RUN php artisan migrate --force
+RUN npm ci
+RUN npm run build
+RUN php artisan config:cache
+RUN php artisan route:cache
+RUN php artisan migrate --force
 
 RUN chown -Rf sail:sail /var/www/html
 
 RUN php artisan about
+RUN php -r 'phpinfo();'
+RUN ls -la
+
 
 RUN chmod +x /usr/local/bin/start-container
 
