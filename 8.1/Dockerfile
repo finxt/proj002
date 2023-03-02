@@ -77,9 +77,6 @@ RUN php artisan migrate --force
 RUN chown -Rf sail:sail /var/www/html
 
 RUN php artisan about
-RUN php -r 'phpinfo();'
-RUN ls -la
-
 
 RUN chmod +x /usr/local/bin/start-container
 
